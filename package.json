@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@iconify-json/simple-icons": "^1.2.39",
-    "@tailwindcss/typography": "^0.5.16",
     "@vueuse/core": "^13.4.0",
     "@vueuse/nuxt": "^13.4.0",
     "drizzle-kit": "^0.31.2",
