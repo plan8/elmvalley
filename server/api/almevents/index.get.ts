@@ -1,54 +1,60 @@
-import { z } from 'zod'
-import type { EventResponse } from '~/types'
+// import { z } from 'zod'
+// import type { EventResponse } from '~/types'
 
-const environmentalBools = [
-  'food', 'battery', 'disposable', 'plastic', 'recycling', 'serviceTravel',
-  'serviceCooking', 'serviceElectricity', 'print', 'stationary', 'water', 'flyer',
-]
 
-export default defineEventHandler(async (event): Promise<EventResponse> => {
-  const query = getQuery(event)
 
-  // Build Zod schema dynamically for environmental booleans
-  const envBoolSchema = environmentalBools.reduce(
-    (acc, key) => ({ ...acc, [key]: z.string().optional() }),
-    {},
-  )
+// export default defineEventHandler(async (event): Promise<EventResponse> => {
+//   const query = getQuery(event)
 
-  const querySchema = z.object({
-    page: z.string().optional(),
-    perPage: z.string().optional(),
-    limit: z.string().optional(),
-    start: z.string().optional(),
-    topic: z.string().optional(),
-    weekDayName: z.string().optional(),
-    title: z.string().optional(),
-    description: z.string().optional(),
-    near: z.string().optional(),
-    radius: z.string().optional(),
-    startDate: z.string().optional(),
-    endDate: z.string().optional(),
-    startTime: z.string().optional(),
-    endTime: z.string().optional(),
-    ...envBoolSchema,
-  })
+//   const environmentalBools = [
+//     'food', 'battery', 'disposable', 'plastic', 'recycling', 'serviceTravel',
+//     'serviceCooking', 'serviceElectricity', 'print', 'stationary', 'water', 'flyer',
+//   ]
 
-  const parsed = querySchema.safeParse(query)
-  if (!parsed.success) {
-    throw createError({ statusCode: 400, statusMessage: 'Invalid query parameters' })
-  }
+//   // Build Zod schema dynamically for environmental booleans
+//   const envBoolSchema = environmentalBools.reduce(
+//     (acc, key) => ({ ...acc, [key]: z.string().optional() }),
+//     {},
+//   )
 
-  // Only pass defined params to the API
-  const apiQuery: Record<string, string> = {}
-  for (const [key, value] of Object.entries(parsed.data)) {
-    if (typeof value === 'string' && value.length > 0) {
-      apiQuery[key] = value
-    }
-  }
+//   const querySchema = z.object({
+//     page: z.string().optional(),
+//     perPage: z.string().optional(),
+//     limit: z.string().optional(),
+//     start: z.string().optional(),
+//     topic: z.string().optional(),
+//     weekDayName: z.string().optional(),
+//     title: z.string().optional(),
+//     description: z.string().optional(),
+//     near: z.string().optional(),
+//     radius: z.string().optional(),
+//     startDate: z.string().optional(),
+//     endDate: z.string().optional(),
+//     startTime: z.string().optional(),
+//     endTime: z.string().optional(),
+//     ...envBoolSchema,
+//   })
 
-  const events = await $fetch<EventResponse>('https://almedalen-api.sparkling-rain-0bd6.workers.dev/events', {
-    query: apiQuery,
-  })
+//   const parsed = querySchema.safeParse(query)
+//   if (!parsed.success) {
+//     throw createError({ statusCode: 400, statusMessage: 'Invalid query parameters' })
+//   }
 
-  return events
-})
+//   // Only pass defined params to the API
+//   const apiQuery: Record<string, string> = {}
+//   for (const [key, value] of Object.entries(parsed.data)) {
+//     if (typeof value === 'string' && value.length > 0) {
+//       apiQuery[key] = value
+//     }
+//   }
+
+//   const events = await $fetch<EventResponse>('https://almedalen-api.sparkling-rain-0bd6.workers.dev/events', {
+//     query: apiQuery,
+//   })
+
+//   return events
+// })
+
+
+
+export default defineEventHandler(() => 'almevents test')
