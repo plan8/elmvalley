@@ -39,6 +39,9 @@ importers:
         specifier: ^4.5.1
         version: 4.5.1(vue@3.5.16(typescript@5.8.3))
     devDependencies:
+      '@iconify-json/simple-icons':
+        specifier: ^1.2.39
+        version: 1.2.39
       '@tailwindcss/typography':
         specifier: ^0.5.16
         version: 0.5.16(tailwindcss@4.1.10)
@@ -835,6 +838,9 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/simple-icons@1.2.39':
+    resolution: {integrity: sha512-XlhW73c4dHvUrwWckVY76HDjnaZ2fWKD6hNZtd5kuv23GC0g3Lu0MXnYscpkIYOeiXO+Gtlw8FM53J7C84mCtA==}
 
   '@iconify/collections@1.0.559':
     resolution: {integrity: sha512-uptOeNb32rPpD/ePW5uWODtb2t4psalS4vCszjaK+vP/EBCYLUBLpKYnRFhY2H2t9Ka9fNVZVgpWWIrbZU2LFA==}
@@ -6645,6 +6651,10 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
+
+  '@iconify-json/simple-icons@1.2.39':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.559':
     dependencies:
