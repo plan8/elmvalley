@@ -26,7 +26,7 @@ import { useFetch } from '#app'
 
 const query = ref('')
 const params = ref<{ query: string }>({ query: '' })
-const { data, pending, error, execute } = useFetch('/api/events/rag', {
+const { data, pending, error, execute } = useFetch('/api/almevents/rag', {
   method: 'GET',
   params,
   immediate: false,
