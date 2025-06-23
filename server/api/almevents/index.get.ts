@@ -46,7 +46,10 @@ export default defineEventHandler(async (event): Promise<EventResponse> => {
   //   }
   // }
 
-  const events = await $fetch<EventResponse>('https://almedalen-api.sparkling-rain-0bd6.workers.dev/events')
+  const url = 'https://gotland.se/appresource/4.4e8c940c1946e1ba5811593f/12.4e8c940c1946e1ba581159d0/items?start=0&day%5B%5D=M%C3%A5ndag&day%5B%5D=Tisdag&day%5B%5D=Onsdag&day%5B%5D=Torsdag&day%5B%5D=Fredag&time%5B%5D=10.00%20-%2011.00&certified%5B%5D=Ja&startDate=2025-06-23&endDate=2025-06-27'
+
+  const oldUrl = 'https://almedalen-api.sparkling-rain-0bd6.workers.dev/event'
+  const events = await $fetch<EventResponse>(url)
 
   return events
 })
