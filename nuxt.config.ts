@@ -1,44 +1,44 @@
 export default defineNuxtConfig({
   modules: [
-    "@nuxthub/core",
-    "@nuxt/eslint",
-    "@nuxt/ui",
-    "@vueuse/nuxt",
-    "nuxthub-ratelimit"
+    '@nuxthub/core',
+    '@nuxt/eslint',
+    '@nuxt/ui',
+    '@vueuse/nuxt',
+    'nuxthub-ratelimit',
   ],
   devtools: { enabled: true },
-  compatibilityDate: "2024-07-30",
+  css: ['~/assets/css/main.css'],
+  compatibilityDate: '2024-07-30',
   nitro: {
     experimental: {
-      openAPI: true
-    }
+      openAPI: true,
+    },
   },
   hub: {
     bindings: {
       observability: {
-        logs: true
-      }
+        logs: true,
+      },
     },
     ai: true,
     blob: true,
     cache: true,
     database: true,
-    kv: true
+    kv: true,
   },
-  css: ['~/assets/css/main.css'],
   eslint: {
     config: {
       stylistic: {
-        // quotes: "single",
-      }
-    }
+        quotes: 'single',
+      },
+    },
   },
   nuxtHubRateLimit: {
     routes: {
-      "/api/*": {
+      '/api/*': {
         maxRequests: 20,
         intervalSeconds: 60,
-      }
-    }
-  }
-});
+      },
+    },
+  },
+})

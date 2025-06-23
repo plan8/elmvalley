@@ -10,7 +10,7 @@
     "preview": "npx nuxthub preview",
     "deploy": "npx nuxthub deploy",
     "postinstall": "nuxt prepare",
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {

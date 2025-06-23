@@ -1,6 +1,6 @@
 <template>
   <UCard>
-    <form @submit.prevent="onSearch" class="flex flex-col gap-4">
+    <form class="flex flex-col gap-4" @submit.prevent="onSearch">
       <UInput
         v-model="title"
         placeholder="Sök efter titel..."
@@ -19,6 +19,9 @@
     <div v-if="error" class="text-red-500 mt-2">
       {{ error.message }}
     </div>
+    <!-- <pre>
+      {{ data }}
+    </pre> -->
   </UCard>
 </template>
 
@@ -30,7 +33,7 @@ const title = ref('')
 const startDate = ref('')
 const params = ref<Record<string, string>>({})
 
-const { pending, error, refresh } = useEvents(params.value)
+const { pending, error, refresh, data } = useEvents(params.value)
 
 function onSearch() {
   params.value = {}
@@ -42,4 +45,4 @@ function onSearch() {
 // Optionally emit results to parent
 // defineEmits(['update:results'])
 // watch(data, val => emit('update:results', val))
-</script> 
+</script>
