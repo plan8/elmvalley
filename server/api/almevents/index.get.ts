@@ -46,9 +46,7 @@ export default defineEventHandler(async (event): Promise<EventResponse> => {
   //   }
   // }
 
-  const events = await $fetch<EventResponse>('https://almedalen-api.sparkling-rain-0bd6.workers.dev/events', {
-    query: apiQuery,
-  })
+  const events = await $fetch<EventResponse>('https://almedalen-api.sparkling-rain-0bd6.workers.dev/events')
 
   return events
 })
