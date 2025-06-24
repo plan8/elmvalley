@@ -13,6 +13,7 @@ import EventList from '@/components/EventList.vue'
       
       <SearchBar />
     </ClientOnly>
+    <EventMap />
     <EventList />
    
     <RagSearchBar />
