@@ -13,11 +13,13 @@
     </div>
     <div v-else class="flex flex-col gap-4">
       <UCard v-for="event in events" :key="event.id" class="border">
-        <div class="flex flex-col gap-1">
-          <span class="font-semibold">{{ event.title }}</span>
-          <span class="text-sm text-gray-600">{{ event.description }}</span>
-          <span class="text-xs text-gray-500">{{ event.date }} | {{ event.topic }}</span>
-        </div>
+        <NuxtLink :to="`/${event.id}`" class="block hover:bg-gray-50 rounded p-2 transition">
+          <div class="flex flex-col gap-1">
+            <span class="font-semibold">{{ event.title }}</span>
+            <span class="text-sm text-gray-600">{{ event.description }}</span>
+            <span class="text-xs text-gray-500">{{ event.date }} | {{ event.topic }}</span>
+          </div>
+        </NuxtLink>
       </UCard>
     </div>
   </UCard>
