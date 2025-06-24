@@ -22,10 +22,10 @@ export default defineEventHandler(async (event): Promise<EventResponse> => {
   const where = whereConditions.length ? and(...whereConditions) : undefined
 
   // Count total using Drizzle ORM
-  // const [{ count: total }] = await db
-  //   .select({ count: count() })
-  //   .from(events)
-  //   .where(where)
+  const [{ count: total }] = await db
+    .select({ count: count() })
+    .from(events)
+    .where(where)
 
   // Get paginated results using Drizzle ORM
   const dataRows = await db
@@ -92,7 +92,7 @@ export default defineEventHandler(async (event): Promise<EventResponse> => {
     pagination: {
       perPage: limit,
       page,
-      // total,
+      total,
       totalPages: Math.ceil(Number(total) / Number(limit)),
     },
   }
