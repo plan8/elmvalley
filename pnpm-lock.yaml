@@ -51,9 +51,6 @@ importers:
       eslint:
         specifier: ^9.29.0
         version: 9.29.0(jiti@2.4.2)
-      nuxthub-ratelimit:
-        specifier: ^1.0.4
-        version: 1.0.4(magicast@0.3.5)
       vue-tsc:
         specifier: ^2.2.10
         version: 2.2.10(typescript@5.8.3)
@@ -4025,9 +4022,6 @@ packages:
         optional: true
       '@types/node':
         optional: true
-
-  nuxthub-ratelimit@1.0.4:
-    resolution: {integrity: sha512-bCaQSdlpO52k1kei+tRS9A6zwjomZamc3XlmLvKTANMzW7uIfKNl5q6iUvewQeUsDdQDRuKfHgyqArxXdnFy3w==}
 
   nypm@0.6.0:
     resolution: {integrity: sha512-mn8wBFV9G9+UFHIrq+pZ2r2zL4aPau/by3kJb3cM7+5tQHMt6HGQB8FDIeKFYp8o0D2pnH6nVsO88N4AmUxIWg==}
@@ -9775,13 +9769,6 @@ snapshots:
       - vue-tsc
       - xml2js
       - yaml
-
-  nuxthub-ratelimit@1.0.4(magicast@0.3.5):
-    dependencies:
-      '@nuxt/kit': 3.17.5(magicast@0.3.5)
-      defu: 6.1.4
-    transitivePeerDependencies:
-      - magicast
 
   nypm@0.6.0:
     dependencies:

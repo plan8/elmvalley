@@ -3,8 +3,7 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     '@nuxt/eslint',
     '@nuxt/ui',
-    '@vueuse/nuxt',
-    'nuxthub-ratelimit',
+    '@vueuse/nuxt'
   ],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
@@ -32,13 +31,5 @@ export default defineNuxtConfig({
         quotes: 'single',
       },
     },
-  },
-  nuxtHubRateLimit: {
-    routes: {
-      '/api/*': {
-        maxRequests: 20,
-        intervalSeconds: 60,
-      },
-    },
-  },
+  }
 })

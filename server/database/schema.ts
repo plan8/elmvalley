@@ -26,31 +26,31 @@ export const events = sqliteTable('events', {
   eventType: text('eventType'),
 
   // Location and People
-  location: text('location'),             // JSON stringified object
-  organizer: text('organizer'),           // JSON stringified array
-  persons: text('persons'),               // JSON stringified array
+  location: text('location'), // JSON stringified object
+  organizer: text('organizer'), // JSON stringified array
+  persons: text('persons'), // JSON stringified array
   contactPerson1: text('contactPerson1'), // JSON stringified object
   contactPerson2: text('contactPerson2'), // JSON stringified object
 
   // Digital and URLs
   url: text('url'),
   uri: text('uri'),
-  urls: text('urls'),                     // JSON stringified object
+  urls: text('urls'), // JSON stringified object
   digitalStream: text('digitalStream'),
   digitalStreamUrl: text('digitalStreamUrl'),
   digitalArchiveUrl: text('digitalArchiveUrl'),
   digitalMeeting: text('digitalMeeting'),
 
   // Display and Accessibility
-  color: text('color'),                   // JSON stringified object
+  color: text('color'), // JSON stringified object
   showEmail: text('showEmail'),
   showPhone: text('showPhone'),
   languages: text('languages'),
-  accessibility: text('accessibility'),   // JSON stringified array
-  environmental: text('environmental'),   // JSON stringified object
+  accessibility: text('accessibility'), // JSON stringified array
+  environmental: text('environmental'), // JSON stringified object
 
   // Other
   interactiveLink: text('interactiveLink'),
   interactiveLinkDescription: text('interactiveLinkDescription'),
   streamService: text('streamService'),
-}) 
+})

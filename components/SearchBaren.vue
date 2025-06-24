@@ -42,7 +42,6 @@
     <div v-if="error" class="text-red-500 mt-2">
       {{ error }}
     </div>
-   
   </UCard>
 </template>
 
@@ -71,9 +70,11 @@ async function onSearch() {
   if (endDate.value) params.endDate = endDate.value
   try {
     await fetchEvents(params)
-  } catch (e: any) {
+  }
+  catch (e: any) {
     error.value = e?.message || 'Något gick fel.'
-  } finally {
+  }
+  finally {
     pending.value = false
   }
 }

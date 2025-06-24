@@ -1,1 +1,5 @@
-export default defineEventHandler(() => 'pong')
+export default defineEventHandler(async () => {
+  return {
+    status: 'pong',
+  }
+})
