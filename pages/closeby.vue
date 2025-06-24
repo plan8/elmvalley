@@ -9,13 +9,6 @@ import EventList from '@/components/EventList.vue'
 
 <template>
   <div>
-    <ClientOnly>
-      
-      <SearchBar />
-    </ClientOnly>
-    <EventList />
-   
-    <RagSearchBar />
-  
+close by
   </div>
 </template>

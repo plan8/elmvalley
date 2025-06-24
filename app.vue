@@ -1,6 +1,7 @@
 <template>
   <UApp>
     <UContainer>
+      <TopNav />
       <NuxtPage />
     </UContainer>
   </UApp>

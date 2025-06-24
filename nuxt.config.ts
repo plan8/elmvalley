@@ -3,7 +3,8 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     '@nuxt/eslint',
     '@nuxt/ui',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    '@pinia/nuxt'
   ],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
