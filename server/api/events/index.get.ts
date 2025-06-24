@@ -1,6 +1,6 @@
-import { and, eq, gte, lte, sql } from 'drizzle-orm'
+import { and, eq, like, gte, lte, count } from 'drizzle-orm'
 import { events } from '@/server/database/schema'
-import type { EventResponse } from '@/types'
+import type { EventResponse, Event } from '@/types'
 
 export default defineEventHandler(async (event): Promise<EventResponse> => {
   const db = useDrizzle()
@@ -10,72 +10,81 @@ export default defineEventHandler(async (event): Promise<EventResponse> => {
   const start = query.start ? parseInt(String(query.start), 10) : (page - 1) * perPage
   const limit = perPage
 
-  // Build filters and WHERE clause
-  const whereClauses: string[] = []
-  const whereBinds: any[] = []
-  if (query.topic) {
-    whereClauses.push('topic = ?')
-    whereBinds.push(String(query.topic))
-  }
-  if (query.weekDayName) {
-    whereClauses.push('weekDayName = ?')
-    whereBinds.push(String(query.weekDayName))
-  }
-  if (query.title) {
-    whereClauses.push('title LIKE ?')
-    whereBinds.push(`%${String(query.title)}%`)
-  }
-  if (query.description) {
-    whereClauses.push('description LIKE ?')
-    whereBinds.push(`%${String(query.description)}%`)
-  }
-  if (query.startDate) {
-    whereClauses.push('date >= ?')
-    whereBinds.push(String(query.startDate))
-  }
-  if (query.endDate) {
-    whereClauses.push('date <= ?')
-    whereBinds.push(String(query.endDate))
-  }
-  // Add more filters as needed
+  // Build Drizzle where conditions
+  const whereConditions = []
+  if (query.topic) whereConditions.push(eq(events.topic, String(query.topic)))
+  if (query.weekDayName) whereConditions.push(eq(events.weekDayName, String(query.weekDayName)))
+  if (query.title) whereConditions.push(like(events.title, `%${String(query.title)}%`))
+  if (query.description) whereConditions.push(like(events.description, `%${String(query.description)}%`))
+  if (query.startDate) whereConditions.push(gte(events.date, String(query.startDate)))
+  if (query.endDate) whereConditions.push(lte(events.date, String(query.endDate)))
 
-  const whereSQL = whereClauses.length ? `WHERE ${whereClauses.join(' AND ')}` : ''
+  const where = whereConditions.length ? and(...whereConditions) : undefined
 
-  // Count total using D1's prepare
-  const countStmt = db.$client.prepare(
-    `SELECT COUNT(*) as count FROM events ${whereSQL}`
-  ).bind(...whereBinds)
-  const countResult = await countStmt.first()
-  const total = countResult?.count ?? 0
+  // Count total using Drizzle ORM
+  // const [{ count: total }] = await db
+  //   .select({ count: count() })
+  //   .from(events)
+  //   .where(where)
 
   // Get paginated results using Drizzle ORM
-  const dataStmt = db.$client.prepare(
-    `SELECT * FROM events ${whereSQL} LIMIT ? OFFSET ?`
-  ).bind(...whereBinds, limit, start)
-  const dataRows = await dataStmt.all()
+  const dataRows = await db
+    .select()
+    .from(events)
+    .where(where)
+    .limit(limit)
+    .offset(start)
 
-  // Parse JSON fields if needed
-  const parseJsonField = (field: unknown) => {
+  // Parse JSON fields as needed for Event type
+  const parseJson = <T>(field: unknown): T | null => {
     try {
       return field ? JSON.parse(String(field)) : null
     } catch {
       return null
     }
   }
-  const data = dataRows.results.map(item => ({
+
+  const data: Event[] = dataRows.map(item => ({
     ...item,
+    id: item.id ?? '',
     eventId: item.eventId ?? '',
     title: item.title ?? '',
     description: item.description ?? '',
-    location: parseJsonField(item.location),
-    organizer: parseJsonField(item.organizer),
-    persons: parseJsonField(item.persons),
-    contactPerson1: parseJsonField(item.contactPerson1),
-    contactPerson2: parseJsonField(item.contactPerson2),
-    urls: parseJsonField(item.urls),
-    color: parseJsonField(item.color),
-    accessibility: parseJsonField(item.accessibility),
-    environmental: parseJsonField(item.environmental),
+    socialIssue: item.socialIssue ?? '',
+    status: item.status ?? '',
+    lastChange: item.lastChange ?? '',
+    date: item.date ?? '',
+    dateISO: item.dateISO ?? null,
+    shortDate: item.shortDate ?? '',
+    startTime: item.startTime ?? '',
+    endTime: item.endTime ?? '',
+    weekDay: item.weekDay ?? 0,
+    weekDayName: item.weekDayName ?? '',
+    topic: item.topic ?? '',
+    topic2: item.topic2 ?? '',
+    category: item.category ?? '',
+    eventType: item.eventType ?? '',
+    location: parseJson<Event['location']>(item.location) ?? { description: '', longitude: 0, latitude: 0 },
+    organizer: parseJson<Event['organizer']>(item.organizer) ?? [],
+    persons: parseJson<Event['persons']>(item.persons),
+    contactPerson1: parseJson<Event['contactPerson1']>(item.contactPerson1) ?? { name: '', title: '', org: '', phone: '', email: '' },
+    contactPerson2: parseJson<Event['contactPerson2']>(item.contactPerson2),
+    url: item.url ?? '',
+    uri: item.uri ?? '',
+    urls: parseJson<Event['urls']>(item.urls) ?? { facebookUrl: '', url1: '' },
+    digitalStream: item.digitalStream ?? '',
+    digitalStreamUrl: item.digitalStreamUrl ?? '',
+    digitalArchiveUrl: item.digitalArchiveUrl ?? '',
+    digitalMeeting: item.digitalMeeting ?? '',
+    color: parseJson<Event['color']>(item.color) ?? { main: '', item: '', itemSecondary: '' },
+    showEmail: item.showEmail ?? '',
+    showPhone: item.showPhone ?? '',
+    languages: item.languages ?? '',
+    accessibility: parseJson<Event['accessibility']>(item.accessibility) ?? [],
+    environmental: parseJson<Event['environmental']>(item.environmental) ?? { stationary: '', serviceTravel: '', serviceCooking: '', recycling: '', certified: '', battery: '', noFood: '', disposable: '', sourceSorting: '' },
+    interactiveLink: item.interactiveLink ?? '',
+    interactiveLinkDescription: item.interactiveLinkDescription ?? '',
+    streamService: item.streamService ?? '',
   }))
 
   return {
@@ -83,8 +92,8 @@ export default defineEventHandler(async (event): Promise<EventResponse> => {
     pagination: {
       perPage: limit,
       page,
-      total,
+      // total,
       totalPages: Math.ceil(Number(total) / Number(limit)),
-    }
+    },
   }
 })
