@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useEventsResult } from '@/composables/events'
+import SearchBar from '@/components/SearchBaren.vue'
 
 const eventsResult = useEventsResult()
 
