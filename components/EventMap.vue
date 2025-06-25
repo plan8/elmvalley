@@ -18,6 +18,9 @@
             <div class="text-xs text-gray-500">
               {{ marker.topic }}
             </div>
+            <NuxtLink :to="`/${marker.id}`" class="text-blue-600 underline mt-2 inline-block">
+              Visa detaljer
+            </NuxtLink>
           </LPopup>
         </LMarker>
       </LMap>
