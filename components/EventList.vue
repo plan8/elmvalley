@@ -16,7 +16,7 @@
         <NuxtLink :to="`/${event.id}`" class="block hover:bg-gray-50 rounded p-2 transition">
           <div class="flex flex-col gap-1">
             <span class="font-semibold">{{ event.title }}</span>
-            <span class="text-sm text-gray-600">{{ event.description }}</span>
+            <span class="text-sm text-gray-600">{{ excerpt(event.description) }}</span>
             <span class="text-xs text-gray-500">{{ event.date }} | {{ event.topic }}</span>
           </div>
         </NuxtLink>
@@ -33,6 +33,11 @@ import { useEventStore } from '@/stores/eventStore'
 const store = useEventStore()
 const { events } = storeToRefs(store)
 const loading = ref(false)
+
+function excerpt(text: string, len = 100) {
+  if (!text) return ''
+  return text.length > len ? text.slice(0, len) + '...' : text
+}
 
 // Optionally, you can watch for fetchEvents to set loading state if you want
 // For now, just expose loading for future use

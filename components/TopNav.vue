@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between items-center my-4">
     <div class="font-bold text-lg">
-      Elmvalley
+      <NuxtLink to="/">Elmvalley</NuxtLink>
     </div>
     <div class="flex items-center gap-4">
         <ColorMode />
@@ -18,12 +18,11 @@
 const links = [
   {
     label: 'Hem',
-    to: '/'
+    to: '/',
   },
   {
-    label: 'Nära mig',
-    to: '/closeby'
+    label: 'Vad händer nu?',
+    to: '/closeby',
   },
-  
 ]
 </script> 

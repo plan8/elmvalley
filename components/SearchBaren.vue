@@ -2,29 +2,12 @@
   <UCard>
     <form class="flex flex-col gap-4" @submit.prevent="onSearch">
       <UInput
-        v-model="title"
-        placeholder="Sök efter titel..."
+        v-model="query"
+        placeholder="Sök efter titel eller beskrivning..."
         icon="i-heroicons-magnifying-glass"
-        label="Titel"
+        label="Sök"
       />
-      <UInput
-        v-model="description"
-        placeholder="Sök efter beskrivning..."
-        icon="i-heroicons-document-text"
-        label="Beskrivning"
-      />
-      <UInput
-        v-model="topic"
-        placeholder="Sök efter ämne..."
-        icon="i-heroicons-tag"
-        label="Ämne (topic)"
-      />
-      <UInput
-        v-model="weekDayName"
-        placeholder="Veckodag (t.ex. Måndag)"
-        icon="i-heroicons-calendar"
-        label="Veckodag"
-      />
+      <TopicSelect v-model="topic" />
       <UInput
         v-model="startDate"
         type="date"
@@ -75,25 +58,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useGeolocation } from '@vueuse/core'
 import { useEventStore } from '@/stores/eventStore'
+import { useRouter, useRoute } from '#imports'
+import TopicSelect from '@/components/TopicSelect.vue'
 
-const title = ref('')
-const description = ref('')
+function getToday() {
+  const now = new Date()
+  const pad = (n: number) => n.toString().padStart(2, '0')
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
+}
+
+const query = ref('')
 const topic = ref('')
-const weekDayName = ref('')
-const startDate = ref('')
+const startDate = ref(getToday())
 const endDate = ref('')
 const radius = ref(5)
 
 const store = useEventStore()
+const router = useRouter()
+const route = useRoute()
 
 const { coords, error: geoError, isSupported, resume } = useGeolocation({ immediate: false })
 const locating = ref(false)
 
 const hasLocation = computed(() =>
-  coords.value.latitude !== null && coords.value.longitude !== null
+  coords.value.latitude !== null && coords.value.longitude !== null,
 )
 
 const locationError = computed(() => {
@@ -115,22 +106,77 @@ function getLocation() {
   )
 }
 
-async function onSearch() {
+function buildParamsFromFields() {
   const params: Record<string, string> = {}
-  if (title.value) params.title = title.value
-  if (description.value) params.description = description.value
+  if (query.value) {
+    params.title = query.value
+    params.description = query.value
+  }
   if (topic.value) params.topic = topic.value
-  if (weekDayName.value) params.weekDayName = weekDayName.value
   if (startDate.value) params.startDate = startDate.value
   if (endDate.value) params.endDate = endDate.value
   if (hasLocation.value) {
     params.near = `${coords.value.longitude},${coords.value.latitude}`
     params.radius = String(radius.value)
   }
-  await store.search(params)
+  return params
+}
+
+function hydrateFieldsFromQuery(q: Record<string, unknown>) {
+  // Combine title/description into query if either is present
+  if (typeof q.title === 'string' && q.title) {
+    query.value = q.title
+  }
+  else if (typeof q.description === 'string' && q.description) {
+    query.value = q.description
+  }
+  else {
+    query.value = ''
+  }
+  topic.value = typeof q.topic === 'string' ? q.topic : ''
+  startDate.value = typeof q.startDate === 'string' ? q.startDate : getToday()
+  endDate.value = typeof q.endDate === 'string' ? q.endDate : ''
+  radius.value = typeof q.radius === 'string' ? Number(q.radius) : 5
+  // Skipping location hydration for now
+}
+
+function buildParamsFromQuery(q: Record<string, unknown>) {
+  const params: Record<string, string> = {}
+  if (typeof q.title === 'string' && q.title) {
+    params.title = q.title
+    params.description = q.title
+  }
+  else if (typeof q.description === 'string' && q.description) {
+    params.title = q.description
+    params.description = q.description
+  }
+  if (typeof q.topic === 'string' && q.topic) params.topic = q.topic
+  if (typeof q.startDate === 'string' && q.startDate) params.startDate = q.startDate
+  if (typeof q.endDate === 'string' && q.endDate) params.endDate = q.endDate
+  if (typeof q.near === 'string' && q.near) params.near = q.near
+  if (typeof q.radius === 'string' && q.radius) params.radius = q.radius
+  return params
+}
+
+function onSearch() {
+  const params = buildParamsFromFields()
+  router.push({ query: { ...params, page: '1' } })
 }
 
 function onPageChange(newPage: number) {
-  store.setPage(newPage)
+  const params = buildParamsFromFields()
+  router.push({ query: { ...params, page: String(newPage) } })
 }
+
+watch(
+  () => route.query,
+  (q) => {
+    hydrateFieldsFromQuery(q)
+    const params = buildParamsFromQuery(q)
+    const page = typeof q.page === 'string' && !isNaN(Number(q.page)) ? Number(q.page) : 1
+    store.page = page
+    store.search(params)
+  },
+  { immediate: true },
+)
 </script>

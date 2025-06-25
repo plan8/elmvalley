@@ -40,7 +40,6 @@ export const useEventStore = defineStore('events', () => {
 
   // Called when a new search is performed (from the search bar)
   const search = async (params: Record<string, string>) => {
-    page.value = 1
     searchParams.value = { ...params }
     await fetchEvents()
   }

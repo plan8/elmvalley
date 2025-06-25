@@ -3,12 +3,19 @@ import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
 
 const route = useRoute()
+
+const router = useRouter()
 const eventId = route.params.eventId as string
 const { data, pending, error } = await useFetch(`/api/events/${eventId}`)
 </script>
 
 <template>
   <div>
+    <div class="mb-4">
+      <NuxtLink @click="router.back()">
+        Tillbaka
+      </NuxtLink>
+    </div>
     <div v-if="pending">
       Laddar...
     </div>
