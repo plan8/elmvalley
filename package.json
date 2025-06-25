@@ -11,7 +11,9 @@
     "deploy": "npx nuxthub deploy",
     "postinstall": "nuxt prepare",
     "lint": "eslint . --fix",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "upload:events": "node scripts/upload-events.js",
+    "scrape:events": "node scripts/scrape-events.js"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.4.1",
