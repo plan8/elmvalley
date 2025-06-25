@@ -41,9 +41,6 @@ importers:
       vue:
         specifier: ^3.5.17
         version: 3.5.17(typescript@5.8.3)
-      vue-leaflet:
-        specifier: ^0.1.0
-        version: 0.1.0
       vue-router:
         specifier: ^4.5.1
         version: 4.5.1(vue@3.5.17(typescript@5.8.3))
@@ -5321,9 +5318,6 @@ packages:
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
-
-  vue-leaflet@0.1.0:
-    resolution: {integrity: sha512-J2QxmQSbmnpM/Ng+C8vxowXcWp/IEe99r87psHyWYpBz2nbxkQAeYXW7WFcgzV4O7d7Vm4a1GcqKzrU9DeDpBA==}
 
   vue-router@4.5.1:
     resolution: {integrity: sha512-ogAF3P97NPm8fJsE4by9dwSYtDwXIY1nFY9T6DyQnGHd1E2Da94w9JIolpe42LJGIl0DwOHBi8TcRPlPGwbTtw==}
@@ -11169,8 +11163,6 @@ snapshots:
       semver: 7.7.2
     transitivePeerDependencies:
       - supports-color
-
-  vue-leaflet@0.1.0: {}
 
   vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)):
     dependencies:
